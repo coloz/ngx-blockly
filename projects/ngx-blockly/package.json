@@ -1,6 +1,10 @@
 {
   "name": "ngx-blockly",
+<<<<<<< HEAD
   "version": "11.0.0",
+=======
+  "version": "10.0.16",
+>>>>>>> master
   "description": "An angular wrapper for google's blockly.",
   "repository": {
     "type": "git",
@@ -20,7 +24,8 @@
     "@angular/core": "11.x.x"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "angular2-uuid": "^1.1.1"
   },
   "scripts": {
     "build_lib": "ng build NgxBlockly",

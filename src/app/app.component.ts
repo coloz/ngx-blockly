@@ -1,10 +1,22 @@
 import { Component } from '@angular/core';
-import { NgxBlocklyConfig } from '../../projects/ngx-blockly/src/lib/ngx-blockly/ngx-blockly.config';
 import { NgxBlocklyGeneratorConfig } from '../../projects/ngx-blockly/src/lib/ngx-blockly/ngx-blockly-generator.config';
 import { ExampleMutator } from './blocks/example.mutator';
 import { ExampleBlock } from './blocks/example.block';
-import { NgxToolboxBuilderService, LOGIC_CATEGORY, LOOP_CATEGORY, MATH_CATEGORY, TEXT_CATEGORY, LISTS_CATEGORY, COLOUR_CATEGORY, VARIABLES_CATEGORY, FUNCTIONS_CATEGORY } from '../../projects/ngx-blockly/src/lib/ngx-blockly/services/ngx-toolbox-builder.service';
+import {
+    NgxToolboxBuilderService,
+    LOGIC_CATEGORY,
+    LOOP_CATEGORY,
+    MATH_CATEGORY,
+    TEXT_CATEGORY,
+    LISTS_CATEGORY,
+    COLOUR_CATEGORY,
+    VARIABLES_CATEGORY,
+    FUNCTIONS_CATEGORY
+} from '../../projects/ngx-blockly/src/lib/ngx-blockly/services/ngx-toolbox-builder.service';
 import { Separator } from '../../projects/ngx-blockly/src/lib/ngx-blockly/models/separator';
+import { NgxBlocklyToolbox } from '../../projects/ngx-blockly/src/lib/ngx-blockly/plugins/ngx-blockly.toolbox';
+
+declare var Blockly: any;
 
 @Component({
     selector: 'app-root',
@@ -13,27 +25,13 @@ import { Separator } from '../../projects/ngx-blockly/src/lib/ngx-blockly/models
 })
 export class AppComponent {
 
-    constructor(ngxToolboxBuilder: NgxToolboxBuilderService) {
-
-        ngxToolboxBuilder.nodes = [
-            LOGIC_CATEGORY,
-            LOOP_CATEGORY,
-            MATH_CATEGORY,
-            TEXT_CATEGORY,
-            LISTS_CATEGORY,
-            COLOUR_CATEGORY,
-            new Separator(),
-            VARIABLES_CATEGORY,
-            FUNCTIONS_CATEGORY
-        ];
-        this.config.toolbox = ngxToolboxBuilder.build();
-    }
+    public readonly = false;
 
     public customBlocks = [
         new ExampleBlock(null, new ExampleMutator('example_mutator'))
     ];
 
-    public config: NgxBlocklyConfig = {
+    public config: any = {
         toolbox: '<xml id="toolbox" style="display: none">' +
             '<category name="Logic" colour="%{BKY_LOGIC_HUE}">' +
             '<block type="controls_if"></block>' +
@@ -49,11 +47,10 @@ export class AppComponent {
             '</xml>',
         scrollbars: true,
         trashcan: true,
-        search: {
-            enabled: true
+        plugins: {
+            'toolbox': NgxBlocklyToolbox
         }
     };
-
 
     public generatorConfig: NgxBlocklyGeneratorConfig = {
         dart: true,
@@ -62,6 +59,21 @@ export class AppComponent {
         php: true,
         python: true,
     };
+
+    constructor(ngxToolboxBuilder: NgxToolboxBuilderService) {
+        ngxToolboxBuilder.nodes = [
+            LOGIC_CATEGORY,
+            LOOP_CATEGORY,
+            MATH_CATEGORY,
+            TEXT_CATEGORY,
+            LISTS_CATEGORY,
+            COLOUR_CATEGORY,
+            new Separator(),
+            VARIABLES_CATEGORY,
+            FUNCTIONS_CATEGORY
+        ];
+        this.config.toolbox = ngxToolboxBuilder.build();
+    }
 
     onCode(code: string) {
         console.log(code);
