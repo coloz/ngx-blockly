@@ -26,7 +26,6 @@
   },
   "scripts": {
     "build_lib": "ng build NgxBlockly",
-    "copy_script": "cp -r src/scripts ../../dist/ngx-blockly",
     "link": "npm run build_lib && cd ../../dist/ngx-blockly && npm link",
     "publish_lib": "cd ../../dist/ngx-blockly && npm publish",
     "publish": "npm run build_lib && npm run publish_lib"
