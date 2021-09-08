@@ -11,16 +11,6 @@ Install from npm repository:
 npm install ngx-blockly --save
 ```
 
-Add the blockly scripts in `angular.json`
-
-```json
-"scripts": [
-    "node_modules/ngx-blockly/scripts/blockly/blockly_compressed.js",
-    "node_modules/ngx-blockly/scripts/blockly/blocks_compressed.js",
-    "node_modules/ngx-blockly/scripts/blockly/python_compressed.js",
-    "node_modules/ngx-blockly/scripts/blockly/msg/js/en.js",
-]
-```
 
 ### Sample
 Example app.module.ts
@@ -143,18 +133,8 @@ export class NgxBlocklyConfig {
     // Map of plugin type to name of registered plugin or plugin class.
     plugins?: any;
 }
-```
-Blockly Generator Config
-```typescript
-export class NgxBlocklyGeneratorConfig {
-    dart?: boolean;
-    javascript?: boolean;
-    lua?: boolean;
-    php?: boolean;
-    python?: boolean;
-    xml?: boolean
-}
 
+``
 ```
 ### Code Generation
 ```typescript
@@ -179,18 +159,18 @@ export class AppComponent {
             '<block type="text_print"></block>' +
             '</xml>',
         scrollbars: true,
-        trashcan: true
+        trashcan: true,
+        generators: [
+            NgxBlocklyGenerator.DART,
+            NgxBlocklyGenerator.LUA,
+            NgxBlocklyGenerator.JAVASCRIPT,
+            NgxBlocklyGenerator.PHP,
+            NgxBlocklyGenerator.PYTHON,
+            NgxBlocklyGenerator.XML
+        ],
+        defaultBlocks: true,
     };
-
-
-    public generatorConfig: NgxBlocklyGeneratorConfig = {
-        dart: true,
-        javascript: true,
-        lua: true,
-        php: true,
-        python: true,
-        xml: true
-    };
+    
 
     onCode(code: string) {
         console.log(code);
@@ -199,7 +179,7 @@ export class AppComponent {
 
 ```
 ```html
-<ngx-blockly [config]="config" [generatorConfig]="generatorConfig" (javascriptCode)="onCode($event)" (pythonCode)="onCode($event)"></ngx-blockly>
+<ngx-blockly [config]="config" (javascriptCode)="onCode($event)" (pythonCode)="onCode($event)"></ngx-blockly>
 
 ```
 ### Import/Export Blockly Project
@@ -259,32 +239,49 @@ Toolbox with search
 ```
 
 Toolbox Generator
+
 ```typescript
-    public customBlocks: CustomBlock[] = [
-        new TestBlock('test', null, null),
-        new DeviceBlock('device', null, null)
+import { Category } from './category';
+
+public customBlocks: CustomBlock[] = [
+    new TestBlock(),
+    new DeviceBlock()
+];
+
+// https://developers.google.com/blockly/guides/configure/web/toolbox#xml_12
+public buttons: Button[] = [
+    new Button('NewButton', 'CallbackKey')
+];
+
+public labels: Label[] = [
+    new Label('NewLabel', 'web-class')
+];
+
+public customCategory = new Category(
+    'MyCategory',
+    '#FF00FF',
+    [...this.buttons, ...this.customBlocks, ...this.labels]
+);
+
+constructor(ngxToolboxBuilder : NgxToolboxBuilderService) {
+    ngxToolboxBuilder.nodes = [
+        this.customCategory,
+        LOGIC_CATEGORY,
+        LOOP_CATEGORY,
+        MATH_CATEGORY,
+        TEXT_CATEGORY,
+        new Separator(), //Add Separator
+        LISTS_CATEGORY,
+        COLOUR_CATEGORY,
+        VARIABLES_CATEGORY,
+        FUNCTIONS_CATEGORY
     ];
-
-
-    constructor(ngxToolboxBuilder: NgxToolboxBuilderService) {
-        ngxToolboxBuilder.nodes = [
-                   new Category('Test', '#FF00FF',this.customBlocks, null),
-                   LOGIC_CATEGORY,
-                   LOOP_CATEGORY,
-                   MATH_CATEGORY,
-                   TEXT_CATEGORY,
-                   new Separator(), //Add Separator
-                   LISTS_CATEGORY,
-                   COLOUR_CATEGORY,
-                   VARIABLES_CATEGORY,
-                   FUNCTIONS_CATEGORY
-        ];
-        this.config.toolbox = ngxToolboxBuilder.build();
-    }
+    this.config.toolbox = ngxToolboxBuilder.build();
+}
 ```
 ```html
     # do not forget to add your customblocks
-   <ngx-blockly [config]="config" [customBlocks]="customBlocks" [generatorConfig]="generatorConfig"  (javascriptCode)="onCode($event)"></ngx-blockly>
+   <ngx-blockly [config]="config" [customBlocks]="customBlocks" (javascriptCode)="onCode($event)"></ngx-blockly>
 ```
 
 ### Custom Block
@@ -294,8 +291,9 @@ declare var Blockly: any;
 export class TestBlock extends CustomBlock {
 
 
-    constructor(type: string, block: any, blockMutator: BlockMutator, ...args: any[]) {
-        super(type, block, blockMutator, ...args);
+    constructor() {
+        // Add Mutator or further args if needed
+        super('TestBlock');
         this.class = TestBlock;
     }
 
