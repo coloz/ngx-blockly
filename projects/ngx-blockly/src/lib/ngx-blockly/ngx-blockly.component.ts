@@ -12,15 +12,15 @@ import {
     SimpleChange,
     ViewChild
 } from '@angular/core';
-import {NgxBlocklyConfig, NgxBlocklyGenerator} from './ngx-blockly.config';
-import {CustomBlock} from './models/custom-block';
+import { NgxBlocklyConfig, NgxBlocklyGenerator } from './ngx-blockly.config';
+import { CustomBlock } from './models/custom-block';
 import * as Blockly from 'blockly/core';
 import 'blockly/dart';
 import 'blockly/javascript';
 import 'blockly/lua';
 import 'blockly/php';
 import 'blockly/python';
-import {NgxBlocklyToolbox} from './plugins/ngx-blockly.toolbox';
+import { NgxBlocklyToolbox } from './plugins/ngx-blockly.toolbox';
 
 @Component({
     selector: 'ngx-blockly',

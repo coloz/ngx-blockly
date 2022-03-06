@@ -1,20 +1,12 @@
-import { Blockly, BlockMutator } from 'ngx-blockly';
+import { BlockMutator } from 'ngx-blockly';
 import { CustomMutator } from './custom-mutator';
 
 export class ExampleMutator extends BlockMutator {
 
+    private _itemCount = 0;
+
     constructor(name, blockList = null) {
         super(name, blockList);
-    }
-
-    mutationToDom(block: any) {
-        console.log('mutationToDom');
-        const container = Blockly.utils.xml.createElement('mutation');
-        return container;
-    }
-
-    domToMutation(block: any, xmlElement: any) {
-        console.log('domToMutation');
     }
 
     decompose(block: any, workspace: any) {
@@ -38,10 +30,23 @@ export class ExampleMutator extends BlockMutator {
     }
 
     loadExtraState(state: any): any {
+        this._itemCount = state['_itemCount'];
+        console.log(this._itemCount);
     }
 
     saveExtraState(): any {
+        console.log(this._itemCount);
+        return {
+            'itemCount': this._itemCount++,
+        };
     }
 
 
+    mutationToDom(block: any) {
+        console.log('asdasd');
+    }
+
+    domToMutation(block: any, xmlElement: any) {
+        console.log('asdaaasd');
+    }
 }

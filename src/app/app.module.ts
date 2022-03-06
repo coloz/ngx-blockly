@@ -5,16 +5,19 @@ import { AppComponent } from './app.component';
 import { NgxBlocklyModule } from '../../projects/ngx-blockly/src/lib/ngx-blockly.module';
 
 
-import 'blockly/blocks';
-
-
 @NgModule({
     declarations: [
         AppComponent
     ],
     imports: [
         BrowserModule,
-        NgxBlocklyModule
+        NgxBlocklyModule.forRoot(
+            {
+                defaultBlocks: true,
+                defaultLanguage: 'en',
+                languages: ['blockly/msg/en', 'blockly/msg/de'],
+                debug: false
+            })
     ],
     providers: [],
     bootstrap: [AppComponent]

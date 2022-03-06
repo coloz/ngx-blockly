@@ -1,6 +1,13 @@
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ModuleWithProviders, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxBlocklyComponent } from './ngx-blockly/ngx-blockly.component';
 import * as Blockly from 'blockly/core';
+
+export interface NgxBlocklyModuleConfig {
+    defaultBlocks: boolean;
+    defaultLanguage: string;
+    languages: string[];
+    debug: boolean;
+}
 
 @NgModule({
     declarations: [NgxBlocklyComponent],
@@ -10,6 +17,27 @@ import * as Blockly from 'blockly/core';
     schemas: [NO_ERRORS_SCHEMA]
 })
 export class NgxBlocklyModule {
+
+    static forRoot(config: NgxBlocklyModuleConfig): ModuleWithProviders<NgxBlocklyModule> {
+        if (config.defaultBlocks) {
+            import('blockly/blocks').then(() => {
+                console.log('default blocks imported');
+            });
+        }
+        if (config.defaultLanguage) {
+            console.log(config.defaultLanguage);
+            for (const language of config.languages) {
+                import(language).then((l) => {
+                    console.log(l);
+                    Blockly.setLocale(l);
+                });
+            }
+
+        }
+        return {
+            ngModule: NgxBlocklyModule
+        };
+    }
 }
 
 Blockly.ToolboxCategory.prototype.parseContents_ = function (categoryDef) {

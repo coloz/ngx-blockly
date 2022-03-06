@@ -117,6 +117,6 @@ export class AppComponent implements AfterViewInit {
     }
 
     onCode(code: string) {
-        console.log(code);
+        // console.log(code);
     }
 }
