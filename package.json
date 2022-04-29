@@ -19,12 +19,12 @@
     "@angular/platform-browser": "^12.2.4",
     "@angular/platform-browser-dynamic": "^12.2.4",
     "@angular/router": "^12.2.4",
-    "blockly": "^6.20210701.0",
+    "angular2-uuid": "^1.1.1",
+    "blockly": "^7.20211209.5",
     "core-js": "^2.6.5",
     "rxjs": "~6.6.3",
     "tslib": "^2.3.1",
-    "zone.js": "~0.11.4",
-    "angular2-uuid": "^1.1.1"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^12.2.6",
